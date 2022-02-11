@@ -3,7 +3,8 @@ pipeline {
   stages{
     stage ("Build") {
       steps {
-        sh "docker build -t joshbolten/pythonflaskapp:latest docker/python/Dockerfile"
+        sh "cd Dockerfile/python/"
+        sh "docker build -t joshbolten/pythonflaskapp:latest ."
       }
     }
     stage ("Deploy to Dockerhub") {
