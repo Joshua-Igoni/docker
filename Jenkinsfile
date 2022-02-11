@@ -1,9 +1,15 @@
 pipeline {
   agent any
   stages{
+    stage('Checkout') {
+        steps {
+            git branch: 'main', credentialsId: 'git_cred', url: 'https://git@github.com/Joshua-Igoni/docker.git'
+        }
+    }
     stage ("Build") {
       steps {
-        sh "docker build -f /docker/files/python/Dockerfile"
+        sh "cd files/python"
+        sh "docker build -t joshbolten/pythonflashapp:latest ."
       }
     }
     stage ("Deploy to Dockerhub") {
