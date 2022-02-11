@@ -1,21 +1,35 @@
 pipeline {
+  environment {
+    registry = "joshbolten/pythonflaskapp"
+    registryCredential = 'docker_cred'
+    dockerImage = ''
+  }
   agent any
-  stages{
-    stage('Checkout') {
-        steps {
-            git branch: 'main', credentialsId: 'git_cred', url: 'https://git@github.com/Joshua-Igoni/docker.git'
-        }
-    }
-    stage ("Build") {
+  stages {
+    stage('Cloning Git') {
       steps {
-        sh "docker build -t joshbolten/pythonflashapp:latest ~/workspace/"automated deployment pipeline"@docker/files/python/Dockerfile"
+        git 'https://github.com/Joshua-Igoni/docker.git'
       }
     }
-    stage ("Deploy to Dockerhub") {
-      steps {
-        withCredentials([usernamePassword(CredentialsId: "docker_cred" , passwordVariable: "PASS", usernameVariable: "USER" )])
-        sh " echo $PASS | $docker login -u $USER --password-stdin "
-        sh "docker push joshbolten/pythonflaskapp:latest "
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
   }
