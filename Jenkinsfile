@@ -8,7 +8,7 @@ pipeline {
     }
     stage ("Build") {
       steps {
-        sh "docker build -t joshbolten/pythonflashapp:latest ~/workspace/"automated deployment pipeline"/@docker/files/python/Dockerfile"
+        sh "docker build -t joshbolten/pythonflashapp:latest ~/workspace/"automated deployment pipeline"@docker/files/python/Dockerfile"
       }
     }
     stage ("Deploy to Dockerhub") {
