@@ -8,7 +8,7 @@ pipeline {
     }
     stage ("Build") {
       steps {
-        sh "cd files/python"
+        sh "cd ~/docker/files/python/Dockerfile"
         sh "docker build -t joshbolten/pythonflashapp:latest ."
       }
     }
