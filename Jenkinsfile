@@ -16,7 +16,7 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker_cred', passwordVariable: 'PASS', usernameVariable: 'USER' )]) {
           sh 'echo $PASS | $sudo docker login -u $USER --password-stdin'
-          sh 'docker push joshbolten/pythonflaskapp:latest'
+          sh 'docker push joshbolten/pythonflaskapp:joshbolten/pythonflaskapp'
         }
       }  
     }
