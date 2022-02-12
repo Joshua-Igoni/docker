@@ -14,7 +14,7 @@ pipeline {
     }
     stage ("Deploy to Dockerhub") {
       steps {
-        withCredentials([usernamePassword(Credentials: "docker_cred", passwordVariable: "PASS", usernameVariable: "USER" )]) {
+        withCredentials([usernamePassword(credentials: "docker_cred", passwordVariable: "PASS", usernameVariable: "USER" )]) {
           sh "echo ${PASS} | $docker login -u ${USER} --password-stdin"
         sh "docker push joshbolten/pythonflaskapp:latest"
         }
